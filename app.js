@@ -9,21 +9,6 @@ app.use(express.urlencoded({ extended: true })); // For parsing application/x-ww
 
 app.set('view engine','ejs');
 
-app.use('/weather',(req,res)=>{
-    
-    const xhtml = new XMLHttpRequest();
-    const url = `http://api.openweathermap.org/data/2.5/weather?q=faisalabad&units=metric&appid=867c2f0510902cd42733fccd01cb3961`;
-    xhtml.open('GET',url,true);
-    xhtml.onreadystatechange  = ()=>{
-        if(xhtml.readyState == 4 && xhtml.status === 200)
-        {
-            const data = JSON.parse(xhtml.responseText);
-            res.render('index',{data});
-        }
-    }
-    xhtml.send();
-})
-
 app.use('/search',(req,res)=>{
     const city = req.body.city;
     const xhtml = new XMLHttpRequest();
@@ -46,7 +31,17 @@ app.use('/search',(req,res)=>{
 })
 
 app.use('/*',(req,res)=>{
-    res.send('<h1>Invalid Address</h1>')
+    const xhtml = new XMLHttpRequest();
+    const url = `http://api.openweathermap.org/data/2.5/weather?q=faisalabad&units=metric&appid=867c2f0510902cd42733fccd01cb3961`;
+    xhtml.open('GET',url,true);
+    xhtml.onreadystatechange  = ()=>{
+        if(xhtml.readyState == 4 && xhtml.status === 200)
+        {
+            const data = JSON.parse(xhtml.responseText);
+            res.render('index',{data});
+        }
+    }
+    xhtml.send();
 })
 
 const port = process.env.P || 8000;
